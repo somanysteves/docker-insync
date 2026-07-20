@@ -114,6 +114,7 @@ Be sure to view the following repositories to understand all the customizable op
 | `INSYNC3_AUTH_CODE` | Third Authorization Code provided by Google                                                 |         |
 | `INSYNC3_DOWNLOAD`  | Third How to download files `link` (.gdoc), `ms-office` (.docx), `open-document` (.odt)     | `link`  |
 | `PROXY_MODE`        | Use Proxy `TRUE` or `FALSE`                                                                 | `FALSE` |
+| `INSYNC_UMASK`      | umask for files and folders Insync creates. `002` keeps them group-writable                 | `002`   |
 | `PROXY_TYPE`        | Type of Proxy `HTTP` `SOCKS4` `SOCKS5`                                                      |         |
 | `PROXY_HOST`        | Name of Proxy Host e.g. `proxy`                                                             |         |
 | `PROXY_PORT`        | Port of Proxy e.g. `3128`                                                                   |         |

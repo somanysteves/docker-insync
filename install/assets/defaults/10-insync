@@ -1,4 +1,9 @@
 #!/command/with-contenv bash
 
 INSYNC1_DOWNLOAD=${INSYNC1_DOWNLOAD:-"open-document"}
+# Files and folders Insync creates are owned by the in-image insync user
+# (uid 12345). With the default 0022 umask they land 755/644, which locks
+# out every other uid on the host -- including the user who owns the share.
+# 002 keeps them group-writable so a shared group actually works.
+INSYNC_UMASK=${INSYNC_UMASK:-"002"}
 PROXY_MODE=${PROXY_MODE:-"NONE"}

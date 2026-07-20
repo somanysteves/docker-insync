@@ -21,4 +21,6 @@ for (( i = 1; i <= $NUM; i++ ))
     done
 
 liftoff
-sudo -u insync exec /usr/bin/insync-headless start --no-daemon
+# sudo resets the umask to its own default, so setting it before this
+# point is silently discarded -- it has to happen inside the sudo'd shell.
+exec sudo -u insync bash -c "umask ${INSYNC_UMASK}; exec /usr/bin/insync-headless start --no-daemon"

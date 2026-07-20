@@ -5,7 +5,7 @@ prepare_service
 PROCESS_NAME="insync"
 
 chown -R insync: /data
-sudo -u insync mkdir -p /data/.config/Insync
+sudo -u insync bash -c "umask ${INSYNC_UMASK}; mkdir -p /data/.config/Insync"
 
 ### Sanity Test
 sanity_var INSYNC1_USERNAME "Google Drive Account"

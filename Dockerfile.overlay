@@ -1,0 +1,27 @@
+# Layers the install/ tree onto the last published image.
+#
+# Why this exists: the real Dockerfile cannot be built any more. Its base,
+# docker.io/tiredofit/debian:buster, has been removed from Docker Hub (the whole
+# tiredofit/debian repo 404s), and the Insync apt repo it pulls from is a Debian
+# buster suite that is long EOL. So `docker build -f Dockerfile .` fails before
+# it runs a single instruction.
+#
+# Until the base is modernised, this overlay applies changes under install/ to
+# the last image that was successfully published (2023-10-20). It is a stopgap,
+# not the fix -- but it is a real, versioned, reproducible image rather than a
+# bind-mounted file that silently disappears on the next rebuild.
+#
+#   docker build -f Dockerfile.overlay -t imjuststeve/docker-insync:umask .
+#
+# The proper fix is to update FROM in the main Dockerfile to a supported base
+# and confirm Insync still installs there; at that point delete this file.
+FROM imjuststeve/docker-insync:test
+
+# s6 reads these at container start, so replacing them is all that is needed.
+COPY install/assets/defaults/10-insync /assets/defaults/10-insync
+COPY install/etc/cont-init.d/10-insync /etc/cont-init.d/10-insync
+COPY install/etc/services.available/10-insync/run /etc/services.available/10-insync/run
+
+RUN chmod +x /assets/defaults/10-insync \
+             /etc/cont-init.d/10-insync \
+             /etc/services.available/10-insync/run
