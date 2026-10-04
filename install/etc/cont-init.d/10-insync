@@ -4,7 +4,13 @@ source /assets/functions/00-container
 prepare_service
 PROCESS_NAME="insync"
 
-chown -R insync: /data
+# Only Insync's own state is chowned recursively. /data is the shared GDrive
+# tree (also written by samba and scan-renamer); a recursive chown here races
+# their ownership on every start and once left 55k entries unwritable to
+# Insync. Ownership of synced content is managed on the host: group insync,
+# setgid dirs. See somanysteves/second-brain#650.
+chown insync: /data
+[ -d /data/.config ] && chown -R insync: /data/.config
 sudo -u insync bash -c "umask ${INSYNC_UMASK}; mkdir -p /data/.config/Insync"
 
 ### Sanity Test
